@@ -1,0 +1,18 @@
+No,enabled,environment,domain,category,type,purpose,param_01,param_02,param_03,param_04,param_05,param_06,param_07,param_08,param_09,param_10,param_11,param_12,param_13,param_14,param_15,param_16,param_17,param_18,param_19,param_20,terraform_stack,terraform_module,depends_on,owner,remarks
+1,true,dev,Common,Project,global,Global project settings,aks-store-demo,son01,koreacentral,krc,,,,,,,,,,,,,,,,,00-common,common,,IaC팀,project_name/prefix/location/location_short
+2,true,dev,AKS,Cluster,aks,AKS cluster reference or future creation,aks-son01-aks-store-demo-dev-krc,1.34.8,rg-node-son01-dev-krc,Standard_D2s_v3,1,250,,,,,,,,,,,,,,,20-aks,aks-cluster,10-network-ref,AKS팀,현재는 기존 AKS 참조 또는 확장 가능
+3,true,dev,K8S,Namespace,namespace,Create pets namespace,pets,,,,,,,,,,,,,,,,,,,,30-k8s-base,k8s-namespace,20-aks,AKS팀,App namespace
+4,true,dev,K8S,Namespace,namespace,Create argocd namespace,argocd,,,,,,,,,,,,,,,,,,,,30-k8s-base,k8s-namespace,20-aks,AKS팀,Argo CD namespace
+5,true,dev,K8S,Namespace,namespace,Create jenkins namespace,jenkins,,,,,,,,,,,,,,,,,,,,30-k8s-base,k8s-namespace,20-aks,AKS팀,Jenkins namespace
+6,true,dev,CICD,Helm,argocd,Install Argo CD,argocd,argocd,https://argoproj.github.io/argo-helm,argo-cd,LoadBalancer,,,,,,,,,,,,,,,35-cicd,helm-release,30-k8s-base,DevOps팀,service type can be ClusterIP or LoadBalancer
+7,true,dev,CICD,Helm,jenkins,Install Jenkins,jenkins,jenkins,https://charts.jenkins.io,jenkins,LoadBalancer,,,,,,,,,,,,,,,35-cicd,helm-release,30-k8s-base,DevOps팀,service type can be ClusterIP or LoadBalancer
+8,true,dev,K8S,Storage,pvc,Create upload PVC,upload-data,pets,azurefile-csi,50Gi,ReadWriteMany,/app/upload,,,,,,,,,,,,,,31-storage,k8s-storage,30-k8s-base,AKS팀,optional shared upload storage
+9,true,dev,K8S,App,backend,Create order service,order-service,pets,ghcr.io/azure-samples/aks-store-demo/order-service:latest,3000,1,ClusterIP,3000,,,,,,,,,,,,,50-apps,k8s-app,30-k8s-base,App팀,backend app
+10,true,dev,K8S,App,backend,Create product service,product-service,pets,ghcr.io/azure-samples/aks-store-demo/product-service:latest,3002,1,ClusterIP,3002,,,,,,,,,,,,,50-apps,k8s-app,30-k8s-base,App팀,backend app
+11,true,dev,K8S,App,backend,Create makeline service,makeline-service,pets,ghcr.io/azure-samples/aks-store-demo/makeline-service:latest,3001,1,ClusterIP,3001,,,,,,,,,,,,,50-apps,k8s-app,30-k8s-base,App팀,known issue may need env vars
+12,true,dev,K8S,App,frontend,Create store front,store-front,pets,ghcr.io/azure-samples/aks-store-demo/store-front:latest,8080,1,LoadBalancer,80,,,,,,,,,,,,,50-apps,k8s-app,30-k8s-base,App팀,public frontend
+13,true,dev,K8S,App,frontend,Create store admin,store-admin,pets,ghcr.io/azure-samples/aks-store-demo/store-admin:latest,8081,1,LoadBalancer,80,,,,,,,,,,,,,50-apps,k8s-app,30-k8s-base,App팀,public admin
+14,true,dev,K8S,App,ai,Create AI service,ai-service,pets,ghcr.io/azure-samples/aks-store-demo/ai-service:latest,5000,1,ClusterIP,5000,,,,,,,,,,,,,50-apps,k8s-app,30-k8s-base,App팀,optional AI service
+15,false,dev,K8S,App,simulator,Create virtual worker,virtual-worker,pets,ghcr.io/azure-samples/aks-store-demo/virtual-worker:latest,0,0,ClusterIP,0,,,,,,,,,,,,,50-apps,k8s-app,30-k8s-base,App팀,disabled by default
+16,true,dev,Monitoring,Alert,pod,Pod restart alert,pod_restart,pets,restart_count,5,warning,action-group-ops,,,,,,,,,,,,,91-alerts,alerts,20-aks,운영팀,future extension
+17,false,dev,Cost,Budget,monthly,Monthly budget alert,aks-monthly-budget,100000,KRW,monthly,owner@example.com,,,,,,,,,,,,,94-cost,cost,00-common,FinOps팀,future extension
